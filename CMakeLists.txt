@@ -97,8 +97,8 @@ set(TR_NAME ${PROJECT_NAME})
 set(TR_VERSION_MAJOR "4")
 set(TR_VERSION_MINOR "1")
 set(TR_VERSION_PATCH "0")
-set(TR_VERSION_BETA_NUMBER "") # empty string for not beta
-set(TR_VERSION_DEV TRUE)
+set(TR_VERSION_BETA_NUMBER "1") # empty string for not beta
+set(TR_VERSION_DEV FALSE)
 
 # derived from above: release type
 if(TR_VERSION_DEV)
@@ -557,7 +557,12 @@ set(TR_WEB_ASSETS ${PROJECT_SOURCE_DIR}/web/public_html)
 if(REBUILD_WEB)
     tr_get_required_flag(REBUILD_WEB NPM_IS_REQUIRED)
 
-    find_program(NPM npm)
+    if(WIN32)
+        find_program(NPM npm.cmd)
+    else()
+        find_program(NPM npm)
+    endif()
+
     if ("${NPM}" STREQUAL "NPM-NOTFOUND")
         set(NPM_FOUND OFF)
         if(NPM_IS_REQUIRED)
